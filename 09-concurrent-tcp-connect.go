@@ -29,10 +29,10 @@ func main() {
 
       for i := 1; i < len(os.Args) ; i ++ {
         url := os.Args[i]        
-       go func() {
-         r, _ := connect_only(url)
+       go func(u string) {
+         r, _ := connect_only(u)
          ch <-  fmt.Sprintf("%s", r)               
-       }()
+       }(url)
       }
 
       //check result 
@@ -41,6 +41,7 @@ func main() {
       }
    }
 }
+
 
 
 
