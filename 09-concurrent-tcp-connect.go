@@ -31,7 +31,7 @@ func main() {
         url := os.Args[i]        
        go func(u string) {
          r, _ := connect_only(u)
-         ch <-  fmt.Sprintf("%s", r)               
+         ch <-  r
        }(url)
       }
 
