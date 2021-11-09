@@ -14,7 +14,8 @@ func main() {
 
    ioutil.WriteFile("/tmp/ps.log", psOut, 0600)
 
-   fmt.Printf("%s \n[%s] msg: %s\n",  string(psOut), 
+   fmt.Printf("%s \n[%s] msg: %s\n",  
+   	          string(psOut), 
               time.Now().Format(time.RFC3339),  
               "Write  /tmp/ps.log ... done " )        
 }
