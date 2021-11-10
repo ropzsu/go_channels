@@ -15,15 +15,8 @@ func serverInfo(w http.ResponseWriter, req *http.Request) {
    upOut, _ := upCMD.Output()
 
    ts := time.Now().Format(time.RFC3339)  
-   w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-  refresh := `<script>
-    window.setInterval('refresh()', 1000); 
-    function refresh() {   window .location.reload();  }
-    </script>
-   `;
-
-   fmt.Fprintf(w, fmt.Sprintf("%s <body><pre>[%s] msg \n%s \n[%s] msg: %s</pre></body>\n", refresh,  ts, psOut, ts , upOut ) )
+   fmt.Fprintf(w, fmt.Sprintf("[%s] msg \n%s \n[%s] msg: %s \n",   ts, psOut, ts , upOut ) )
 }
 
 
