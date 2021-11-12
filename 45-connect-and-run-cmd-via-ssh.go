@@ -7,17 +7,8 @@ import (
     "os"
 )
 
-func main() {
-
-    if (len(os.Args) < 4 ) {
-     fmt.Println("Usage: ./$0  <username> <host-ip> <cmd> \n  Before use, must set TOKEN env")
-     return  
-   }
-    user := os.Args[1] 
-    host := os.Args[2] 
-    cmd := os.Args[3] 
-    passwd :=  os.Getenv("TOKEN") 
-
+func ssh_session_and_run( user, host, cmd , passwd string ) string {
+    
     // 建立SSH客户端连接
     client, err := ssh.Dial("tcp", host + ":36000", &ssh.ClientConfig{
         User:            user,
@@ -40,6 +31,24 @@ func main() {
         fmt.Fprintf(os.Stdout, "Failed to run command, Err:%s", err.Error())
         os.Exit(0)
     }
-    fmt.Println(string(result))
+    return fmt.Sprintf("%s\n", string(result))    
+}
+
+
+func main() {
+
+    if (len(os.Args) < 4 ) {
+     fmt.Println("Usage: ./$0  <username> <host-ip> <cmd> \n  Before use, must set TOKEN env")
+     return  
+   }
+   
+    user := os.Args[1] 
+    host := os.Args[2] 
+    cmd := os.Args[3] 
+    passwd :=  os.Getenv("TOKEN") 
+
+    result := ssh_session_and_run(user, host, cmd , passwd)
+    fmt.Println(result)
+
 }
 
