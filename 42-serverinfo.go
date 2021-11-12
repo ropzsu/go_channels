@@ -15,7 +15,6 @@ func make_handle_func(cmd string) func (  http.ResponseWriter,   *http.Request) 
                 ts := time.Now().Format(time.RFC3339)
                 fmt.Fprintln(w, fmt.Sprintf("[%s] msg \n", ts) , string(psOut) )
         }
-
 }
 
 func main() {
