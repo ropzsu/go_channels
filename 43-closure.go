@@ -17,8 +17,8 @@ func main() {
 	bob := say("jamie")
 
     for i := 0; i < 3; i ++ {
-	  	fmt.Println(alex(101))
-		fmt.Println(bob(102))  
+	  fmt.Println(alex(101))
+ 	  fmt.Println(bob(102))  
     }
 
 }
