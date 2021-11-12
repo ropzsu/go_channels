@@ -1,42 +1,27 @@
+
 package main
 
 import (
         "fmt"
         "net/http"
         "os/exec"
-        "strings"
         "time"
 )
 
-func serverInfo_ps(w http.ResponseWriter, req *http.Request) {
-        psCMD := exec.Command("bash", "-c", "ps -e -o \"pid,etime,comm,args\" |grep -v ] |cat -n  ")
-        psOut, _ := psCMD.Output()
-        ts := time.Now().Format(time.RFC3339)
-        fmt.Fprintf(w, fmt.Sprintf("[%s] msg \n%s", ts, psOut))
-}
+func make_handle_func(cmd string) func (  http.ResponseWriter,   *http.Request) {
+        return func  (w http.ResponseWriter, req *http.Request) {
+                psCMD := exec.Command("bash", "-c",  cmd )
+                psOut, _ := psCMD.Output()
+                ts := time.Now().Format(time.RFC3339)
+                fmt.Fprintln(w, fmt.Sprintf("[%s] msg \n", ts) , string(psOut) )
+        }
 
-func serverInfo_disk(w http.ResponseWriter, req *http.Request) {
-        psCMD := exec.Command("bash", "-c", " df -h |cat -n ")
-        psOut, _ := psCMD.Output()
-
-        ts := time.Now().Format(time.RFC3339)
-        s := strings.ReplaceAll(string(psOut), "%", " disk rate")
-
-        fmt.Fprintf(w, fmt.Sprintf("[%s] msg \n%s", ts, s))
-}
-
-func serverInfo_uptime(w http.ResponseWriter, req *http.Request) {
-        psCMD := exec.Command("bash", "-c", " uptime ")
-        psOut, _ := psCMD.Output()
-        ts := time.Now().Format(time.RFC3339)
-        fmt.Fprintf(w, fmt.Sprintf("[%s] msg \n%s", ts, psOut))
 }
 
 func main() {
-        http.HandleFunc("/dnNvcHMK/ps", serverInfo_ps)
-        http.HandleFunc("/dnNvcHMK/disk", serverInfo_disk)
-        http.HandleFunc("/dnNvcHMK/uptime", serverInfo_uptime)
-
+        http.HandleFunc("/dnNvcHMK/ps", make_handle_func("ps -e -o  \"pid,etime,comm,args\" |cat -n "))
+        http.HandleFunc("/dnNvcHMK/disk", make_handle_func("df -h |cat -n ")  )
+        http.HandleFunc("/dnNvcHMK/uptime", make_handle_func("uptime") )
         http.ListenAndServe(":1998", nil)
 }
 
