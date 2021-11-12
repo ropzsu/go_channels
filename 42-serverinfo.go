@@ -33,9 +33,9 @@ func serverInfo_uptime(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-        http.HandleFunc("/VGVuY2VudA/ps", serverInfo_ps)
-        http.HandleFunc("/VGVuY2VudA/disk", serverInfo_disk)
-        http.HandleFunc("/VGVuY2VudA/uptime", serverInfo_uptime)
+        http.HandleFunc("/dnNvcHMK/ps", serverInfo_ps)
+        http.HandleFunc("/dnNvcHMK/disk", serverInfo_disk)
+        http.HandleFunc("/dnNvcHMK/uptime", serverInfo_uptime)
 
         http.ListenAndServe(":1998", nil)
 }
