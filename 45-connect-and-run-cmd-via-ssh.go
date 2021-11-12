@@ -1,56 +1,45 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"golang.org/x/crypto/ssh"
-	"os"
+    "fmt"
+    "golang.org/x/crypto/ssh"
+    "log"
+    "os"
 )
 
-func connectViaSsh(user, host string, password string) (*ssh.Client, *ssh.Session) {
-	config := &ssh.ClientConfig{
-		User: user,
-		Auth: []ssh.AuthMethod{
-			ssh.KeyboardInteractive(SshInteractive),
-		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	}
-	client, err := ssh.Dial("tcp", host, config)
-	fmt.Println(err)
-	session, err := client.NewSession()
-	fmt.Println(err)
-
-	return client, session
-}
-
-func SshInteractive(user, instruction string, questions []string, echos []bool) (answers []string, err error) {
-	answers = make([]string, len(questions))
-	// The second parameter is unused
-	for n, _ := range questions {
-		answers[n] = os.Getenv("TOKEN")
-	}
-
-	return answers, nil
-}
-
 func main() {
-	var b bytes.Buffer
-	if len(os.Args) < 3 {
-		fmt.Println("Must SET environ : USER_ID  + TOKEN")
-		fmt.Printf("Usage: %s  <HOST> <CMD>\n", os.Args[0])
-		return
-	}
 
-	user := os.Getenv("USER_ID")
-	host := os.Args[1]
-	cmd := os.Args[2]
+    if (len(os.Args) < 4 ) {
+     fmt.Println("Usage: ./$0  <username> <host-ip> <cmd> \n  Before use, must set TOKEN env")
+     return  
+   }
+    user := os.Args[1] 
+    host := os.Args[2] 
+    cmd := os.Args[3] 
+    passwd :=  os.Getenv("TOKEN") 
 
-	fmt.Println(">>> Step 1: Connect HOST: ", host)
-	client, session := connectViaSsh(user, host+":22", "Password:")
+    // 建立SSH客户端连接
+    client, err := ssh.Dial("tcp", host + ":36000", &ssh.ClientConfig{
+        User:            user,
+        Auth:            []ssh.AuthMethod{ssh.Password(passwd)},
+        HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+    })
+    if err != nil {
+        log.Fatalf("SSH dial error: %s", err.Error())
+    }
 
-	session.Stdout = &b
-	session.Run(cmd)
-	fmt.Println(">>> Step 2: Print Result: ")
-	fmt.Println(b.String())
-	client.Close()
+    // 建立新会话
+    session, err := client.NewSession()
+    defer session.Close()
+    if err != nil {
+        log.Fatalf("new session error: %s", err.Error())
+    }
+
+    result, err := session.Output(cmd)
+    if err != nil {
+        fmt.Fprintf(os.Stdout, "Failed to run command, Err:%s", err.Error())
+        os.Exit(0)
+    }
+    fmt.Println(string(result))
 }
+
