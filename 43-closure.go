@@ -4,18 +4,22 @@ package main
 import "fmt"
 
 func say(name string) func () string {
+    var n = 0
 	return func() string{
-	   return fmt.Sprintf("Hello: %s" ,name)
+	   n++
+	   return fmt.Sprintf("Hello: %s, Seq: %d" ,name, n)
 	}
 
 }
 
 func main() {
-	alex := say("alex")
-	bob := say("bob")
+	alex := say("brian")
+	bob := say("jamie")
 
-	fmt.Println(alex())
-	fmt.Println(bob())
+    for i := 0; i < 3; i ++ {
+	  	fmt.Println(alex())
+		fmt.Println(bob())  
+    }
+
 }
-
 
