@@ -5,6 +5,7 @@ import (
    "encoding/json"
    "io/ioutil"
    "log"
+   "fmt"
    "net/http"
 )
 
@@ -14,6 +15,7 @@ func main() {
       "name":  "Toby",
       "email": "Toby@example.com",
    })
+   fmt.Println(string(postBody), "\n\n")
    responseBody := bytes.NewBuffer(postBody)
 //Leverage Go's HTTP Post function to make request
    resp, err := http.Post("https://postman-echo.com/post", "application/json", responseBody)
