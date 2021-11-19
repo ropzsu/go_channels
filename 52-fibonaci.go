@@ -16,30 +16,37 @@ func fibon() func () int {
 	}
 }
 
+func fibon2() func (chan int)   {
+	var i, j = 0, 1
+
+	return func ( c chan int)   {
+	    v := i
+	    i, j = j , i+j
+	    c <- v
+	}
+}
+
+
 func main() {
     t1 := time.Now()
 	f := fibon()
 	for i := 0 ; i < 10; i ++ {
-	  fmt.Printf( "fib(%d) = %d\n", i,  f())
+	  fmt.Printf( "v1: fib(%d) = %d\n", i,  f())
 	}
 	t2 := time.Now()
 
 	fmt.Printf("cost time = %s\n", t2.Sub(t1))
 
+
+    ch := make(chan int)
+    t1  = time.Now()
+	f2 := fibon2()
+	for i := 0 ; i < 10; i ++ {
+	  go f2(ch)
+	  fmt.Printf( "v2: go routine: fib(%d) = %d\n", i,  <-ch )
+	}
+	t2  = time.Now()
+
+	fmt.Printf("cost time = %s\n", t2.Sub(t1))
+
 }
-
-/*
-[brianguo@VM-16-7-centos go_channels]$ go run 11-fibon.go
-fib(0) = 0
-fib(1) = 1
-fib(2) = 1
-fib(3) = 2
-fib(4) = 3
-fib(5) = 5
-fib(6) = 8
-fib(7) = 13
-fib(8) = 21
-fib(9) = 34
-cost time = 33.937µs
-
-*/
