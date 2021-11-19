@@ -38,7 +38,7 @@ func run_job_1(r chan string) {
 	}
 	t2 := time.Now()
 	
-	r <-   msg.String()   + "run1 done." + " cost time = " + fmt.Sprintf("cost time = %s\n", t2.Sub(t1))  
+	r <-   msg.String()   + "run1 done."   + fmt.Sprintf(" cost time = %s\n", t2.Sub(t1))  
 
 }
 
@@ -55,7 +55,7 @@ func run_job_2( r chan string) {
 	t2  := time.Now()
 
 	
-	r <- msg.String()  +  "run2 done." + " cost time = " +fmt.Sprintf("cost time = %s\n", t2.Sub(t1))   
+	r <- msg.String()  +  "run2 done."   +fmt.Sprintf(" cost time = %s\n", t2.Sub(t1))   
 }
 
 func main() {
