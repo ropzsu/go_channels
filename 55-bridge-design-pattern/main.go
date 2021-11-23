@@ -20,3 +20,9 @@ func main() {
     winComputer.print()
     fmt.Println()
 }
+
+/*
+
+https://golangbyexample.com/bridge-design-pattern-in-go/
+
+*/
