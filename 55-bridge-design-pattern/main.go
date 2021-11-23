@@ -25,4 +25,17 @@ func main() {
 
 https://golangbyexample.com/bridge-design-pattern-in-go/
 
+$ ./bridge_printer 
+Print request for mac
+Printing by a HP Printer
+
+Print request for mac
+Printing by a EPSON Printer
+
+Print request for windows
+Printing by a HP Printer
+
+Print request for windows
+Printing by a EPSON Printer
+
 */
