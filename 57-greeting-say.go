@@ -23,3 +23,8 @@ func main() {
     g = Greeting(french)
     g.say("World")
 }
+
+/*
+A function type denotes the set of all functions with the same parameter and result types.
+
+*/
