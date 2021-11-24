@@ -14,9 +14,8 @@ func make_handle_func(cmd string) func (  http.ResponseWriter,   *http.Request) 
                 psOut, _ := psCMD.Output()
                 ts := time.Now().Format(time.RFC3339)
                 fmt.Fprintln(w, fmt.Sprintf("[%s] msg \n", ts) , string(psOut) )
-
                 // Logging
-                fmt.Printf("[%s] connect by %s, path = %s\n", ts, req.RemoteAddr , req.URL.Path )
+                fmt.Printf("[%s]  remote addr = %s, request path = %s\n", ts, req.RemoteAddr , req.URL.Path )
         }
 }
 
