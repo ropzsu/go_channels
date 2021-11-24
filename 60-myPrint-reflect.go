@@ -6,11 +6,13 @@ import (
 "os"
 "reflect"
 "strconv"
+"fmt"
 )
 
 
 func main() {
   myPrint("Hello ", 42, "\n")	
+  fmt.Printf("%#v\n", myPrint)
 }
 
 func myPrint(args ...interface{} ){
@@ -22,5 +24,5 @@ func myPrint(args ...interface{} ){
 	       os.Stdout.WriteString(strconv.FormatInt(v.Int(), 10))
 
 	  }
-	}
+   }
 } 
